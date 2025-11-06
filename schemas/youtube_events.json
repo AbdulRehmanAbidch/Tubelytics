@@ -1,0 +1,184 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tubelytics Event Schemas",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/definitions/youtube.channel_stats"
+    },
+    {
+      "$ref": "#/definitions/youtube.video_stats"
+    }
+  ],
+  "definitions": {
+    "youtube.channel_stats": {
+      "type": "object",
+      "required": [
+        "event_type",
+        "channel_id"
+      ],
+      "properties": {
+        "event_type": {
+          "const": "youtube.channel_stats"
+        },
+        "emitted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "snapshot_ts": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "channel_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "custom_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "country": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "statistics": {
+          "type": "object",
+          "properties": {
+            "subscribers": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "views": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "videos": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "youtube.video_stats": {
+      "type": "object",
+      "required": [
+        "event_type",
+        "video_id",
+        "channel_id"
+      ],
+      "properties": {
+        "event_type": {
+          "const": "youtube.video_stats"
+        },
+        "emitted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "snapshot_ts": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "video_id": {
+          "type": "string"
+        },
+        "channel_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "published_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "duration_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "statistics": {
+          "type": "object",
+          "properties": {
+            "views": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "likes": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "comments": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "event_type": "youtube.channel_stats",
+      "emitted_at": "2025-11-05T02:34:56Z",
+      "channel_id": "UCabcd",
+      "title": "Cool Channel",
+      "custom_url": "cool",
+      "country": "CA",
+      "description": "About...",
+      "statistics": {
+        "subscribers": 123,
+        "views": 9999,
+        "videos": 7
+      },
+      "snapshot_ts": "2025-11-05T02:30:00Z"
+    },
+    {
+      "event_type": "youtube.video_stats",
+      "emitted_at": "2025-11-05T02:35:56Z",
+      "video_id": "dQw4w9WgXcQ",
+      "channel_id": "UCabcd",
+      "title": "A Great Video",
+      "published_at": "2024-01-01T00:00:00Z",
+      "duration_seconds": 213,
+      "statistics": {
+        "views": 1000000,
+        "likes": 50000,
+        "comments": 4200
+      },
+      "snapshot_ts": "2025-11-05T02:35:00Z"
+    }
+  ]
+}
