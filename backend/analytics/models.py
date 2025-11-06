@@ -3,49 +3,22 @@ from django.contrib.auth.models import User
 
 
 class Channel(models.Model):
-    channel_id   = models.CharField(max_length=64, unique=True)
-    title        = models.CharField(max_length=255)
-    description  = models.TextField(blank=True)
-    subscribers  = models.BigIntegerField(default=0)
-    total_videos = models.BigIntegerField(default=0)
-    total_views  = models.BigIntegerField(default=0)
+    channel_id = models.CharField(max_length=100, unique=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    requested_by = models.ForeignKey(
-        User,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="channels",
-    )
-
-    created_at   = models.DateTimeField(auto_now_add=True)
-    updated_at   = models.DateTimeField(auto_now=True)
-
-    def __str__(self) -> str:
+    def __str__(self):
         return self.title or self.channel_id
 
 
 class Video(models.Model):
-    video_id     = models.CharField(max_length=64, unique=True)
-    channel      = models.ForeignKey(
-        Channel,
-        related_name="videos",
-        on_delete=models.CASCADE,
-    )
-
-    title        = models.CharField(max_length=255)
-    description  = models.TextField(blank=True)
+    channel = models.ForeignKey(Channel, on_delete=models.CASCADE, related_name="videos")
+    video_id = models.CharField(max_length=50, unique=True)
+    title = models.CharField(max_length=255)
     published_at = models.DateTimeField()
-    duration     = models.CharField(max_length=32)  # keep ISO 8601 like "PT10M5S"
+    view_count = models.BigIntegerField(default=0)
+    like_count = models.BigIntegerField(default=0)
+    comment_count = models.BigIntegerField(default=0)
 
-    views        = models.BigIntegerField(default=0)
-    likes        = models.BigIntegerField(default=0)
-    comments     = models.BigIntegerField(default=0)
-
-    tags         = models.JSONField(default=list, blank=True)
-
-    created_at   = models.DateTimeField(auto_now_add=True)
-    updated_at   = models.DateTimeField(auto_now=True)
-
-    def __str__(self) -> str:
+    def __str__(self):
         return self.title

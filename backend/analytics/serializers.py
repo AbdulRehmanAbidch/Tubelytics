@@ -15,17 +15,19 @@ class ChannelSerializer(serializers.ModelSerializer):
         ]
 
 
+class ChannelSummarySerializer(serializers.Serializer):
+    channel_id            = serializers.CharField()
+    title                 = serializers.CharField()
+    description           = serializers.CharField(allow_blank=True)
+    subscribers           = serializers.IntegerField()
+    total_videos          = serializers.IntegerField()
+    total_views           = serializers.IntegerField()
+    total_video_views     = serializers.IntegerField()
+    total_video_likes     = serializers.IntegerField()
+    total_video_comments  = serializers.IntegerField()
+
+
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = [
-            "video_id",
-            "title",
-            "description",
-            "published_at",
-            "duration",
-            "views",
-            "likes",
-            "comments",
-            "tags",
-        ]
+        fields = "__all__"

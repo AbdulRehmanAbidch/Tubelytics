@@ -1,24 +1,31 @@
-"""
-URL configuration for tubelytics project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
-from analytics.views import resolve_channel_view
+
+from analytics.views import (
+    resolve_channel_view,
+    channel_summary_view,
+    channel_videos_view,
+    fetch_channel_videos_view,
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+
+    # API
     path("api/channels/resolve/", resolve_channel_view, name="resolve-channel"),
+    path(
+        "api/channels/<str:channel_id>/summary/",
+        channel_summary_view,
+        name="channel-summary",
+    ),
+    path(
+        "api/channels/<str:channel_id>/videos/",
+        channel_videos_view,
+        name="channel-videos",
+    ),
+    path(
+        "api/channels/videos/",
+        fetch_channel_videos_view,
+        name="fetch-channel-videos",
+    ),
 ]
